@@ -14,7 +14,7 @@ readability across groups.  To quote the
 "Creating common, required idioms and patterns makes code much easier to
 understand."
 
-This guide defines the Comportable style for Verilog. The goals are to:
+This guide defines the Compartable style for Verilog. The goals are to:
 
 *   promote consistency across hardware development projects
 *   promote best practices
