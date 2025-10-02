@@ -47,7 +47,7 @@ test bench code.
       - [No Tabs](#no-tabs)
       - [No Trailing Spaces](#no-trailing-spaces)
     - [Begin / End](#begin--end)
-    - [Indentation](#indentation)
+    - [Indentation 들어쓰기](#indentation)
       - [Indented Sections](#indented-sections)
       - [Line Wrapping](#line-wrapping)
       - [Preprocessor Directives](#preprocessor-directives)
