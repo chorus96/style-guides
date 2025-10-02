@@ -24,8 +24,9 @@ This style guide defines style for both Verilog-2001 and SystemVerilog compliant
 code. Additionally, this style guide defines style for both synthesizable and
 test bench code.
 
-See the [Appendix](#appendix---condensed-style-guide) for a condensed tabular
-representation of this style guide.
+[Appendix](#appendix---condensed-style-guide)에서 이 스타일 가이드의 요약된 표 형태를 확인할 수 있습니다.
+
+
 
 **Table of Contents**
 
