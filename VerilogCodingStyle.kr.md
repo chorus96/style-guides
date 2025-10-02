@@ -239,7 +239,7 @@ line.
 Exceptions:
 
 -   Any place where line wraps are impossible (for example, an include path
-    might extend past 100 characters).
+    might extend past 100 characters). 줄바꿈이 불가능한 경우(예: include 경로가 100자를 초과하는 경우 등)에는 예외로 허용됩니다.    
 
 [Line-wrapping](#line-wrapping) contains additional guidelines on how to wrap
 long lines.
@@ -254,7 +254,7 @@ about indentation and wrapping.
 To convert tabs to spaces on any file, you can use the
 [UNIX `expand`](http://linux.die.net/man/1/expand) utility.
 
-#### No Trailing Spaces
+#### No Trailing Spaces 줄 끝 공백 금지
 
 ***Delete trailing whitespace at the end of lines.***
 
