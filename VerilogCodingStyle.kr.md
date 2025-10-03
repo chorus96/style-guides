@@ -24,7 +24,8 @@ This style guide defines style for both Verilog-2001 and SystemVerilog compliant
 code. Additionally, this style guide defines style for both synthesizable and
 test bench code.
 
-[Appendix](#appendix---condensed-style-guide)에서 이 스타일 가이드의 요약된 표 형태를 확인할 수 있습니다.
+See the [Appendix](#appendix---condensed-style-guide) for a condensed tabular
+representation of this style guide. [Appendix](#appendix---condensed-style-guide)에서 이 스타일 가이드의 요약된 표 형태를 확인할 수 있습니다.
 
 
 
@@ -33,10 +34,10 @@ test bench code.
 - [lowRISC Verilog Coding Style Guide](#lowrisc-verilog-coding-style-guide)
   - [Basics](#basics)
     - [Summary](#summary)
-    - [용어 규칙](#terminology-conventions)
+    - [Terminology Conventions 용어 규칙](#terminology-conventions)
     - [Default to C-like Formatting](#default-to-c-like-formatting)
     - [Style Guide Exceptions](#style-guide-exceptions)
-    - [사용할 Verilog 버전](#which-verilog-to-use)
+    - [Which Verilog to Use 사용할 Verilog 버전](#which-verilog-to-use)
   - [Verilog/SystemVerilog Conventions](#verilogsystemverilog-conventions)
     - [Summary](#summary-1)
     - [File Extensions](#file-extensions)
@@ -135,11 +136,11 @@ test bench code.
 ### Terminology Conventions
 
 Unless otherwise noted, the following terminology conventions apply to this
-style guide:
+style guide: 별도의 언급이 없는 한, 이 스타일 가이드에서 사용하는 용어는 다음과 같이 정의합니다.
 
 *   The word ***must*** indicates a mandatory requirement. Similarly, ***do
     not*** indicates a prohibition. Imperative and declarative statements
-    correspond to ***must***.
+    correspond to ***must***. 명령문과 서술문은 'must'에 해당합니다.
 *   The word ***recommended*** indicates that a certain course of action is
     preferred or is most suitable. Similarly, ***not recommended*** indicates
     that a course of action is unsuitable, but not prohibited. There may be
@@ -152,19 +153,19 @@ style guide:
 ### Default to C-like Formatting
 
 ***Where appropriate, format code consistent with
-https://google.github.io/styleguide/cppguide.html***
+https://google.github.io/styleguide/cppguide.html*** 적절한 경우, https://google.github.io/styleguide/cppguide.html 에 맞춰 코드를 포맷팅하세요.
 
 Verilog is a C-like language, and where appropriate, we default to being
 consistent with
-[Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
+[Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html). Verilog은 C 계열 언어이므로, 적절한 경우 Google의 C++ 스타일 가이드를 따르는 것을 기본으로 합니다.
 
 In particular, we inherit these specific formatting guidelines:
 
 *   Generally, [names](#naming) should be descriptive and avoid abbreviations.
 *   Non-ASCII characters are forbidden.
 *   Indentation uses spaces, no tabs. Indentation is two spaces for nesting,
-    four spaces for line continuation.
-*   Place a space between `if` and the parenthesis in
+    four spaces for line continuation. 중첩에는 두 칸, 줄이 이어질 때는 네 칸의 공백을 사용합니다.
+*   Place a space between `if` and the parenthesis(괄호, 특히 둥근괄호) in
     [conditional expressions](https://google.github.io/styleguide/cppguide.html#Conditionals).
 *   Use horizontal whitespace around operators, and avoid trailing
     whitespace at the end of lines.
@@ -178,10 +179,10 @@ In particular, we inherit these specific formatting guidelines:
 ***Justify all exceptions with a comment.***
 
 No style guide is perfect. There are times when the best path to a working
-design, or for working around a tool issue, is to simply cut the Gordian Knot
+design, or for working around a tool issue, is to simply cut the Gordian Knot(고르디우스의 매듭)
 and create code that is at variance with this style guide. It is always okay to
-deviate from the style guide by necessity, as long as that necessity is clearly
-justified by a brief comment, as well as a lint waiver pragma where appropriate.
+deviate(벗어나다) from the style guide by necessity, as long as that necessity is clearly
+justified by a brief comment, as well as a lint waiver pragma where appropriate. 모든 스타일 가이드가 완벽한 것은 아닙니다. 동작하는 설계를 만들거나 도구의 문제를 우회하기 위해, 때로는 과감하게 문제를 해결하고 이 스타일 가이드와 다르게 코드를 작성하는 것이 최선일 때도 있습니다. 반드시 필요한 경우라면, 그 필요성이 간단한 주석과(필요하다면) lint 예외 pragma로 명확히 설명된다면 스타일 가이드를 벗어나도 괜찮습니다.
 
 ### Which Verilog to Use
 
@@ -196,7 +197,7 @@ The standards document is available free of cost through [IEEE GET](https://ieee
 
 ### Summary
 
-This section addresses primarily aesthetic aspects of style: line length,
+This section addresses primarily aesthetic(미적인) aspects of style: line length,
 indentation, spacing, etc.
 
 ### File Extensions
@@ -393,7 +394,7 @@ endcase
 
 ***Indentation is two spaces per level.***
 
-Use spaces for indentation. Do not use tabs. You should set your editor to emit
+Use spaces for indentation. Do not use tabs. You should set your editor to emit(내뿜다)
 spaces when you hit the tab key.
 
 #### Indented Sections
@@ -466,7 +467,7 @@ inst_type inst_name1 (
   .data_ready_o(data_ready)
 );
 ```
-
+BookMark
 #### Preprocessor Directives
 
 ***Keep branching preprocessor directives left-aligned and un-indented.***
