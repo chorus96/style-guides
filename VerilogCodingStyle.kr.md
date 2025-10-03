@@ -651,7 +651,7 @@ of a qualified name.***
 A qualified name contains at least one scope `::` operator connecting its
 segments. A space in a qualified name would break the continuity of a reference
 to one symbol, so it must not be added. Parameter lists must follow the
-[space-after-comma](#comma-delimited-lists) rule.
+[space-after-comma](#comma-delimited-lists) rule. 한정 이름(qualified name)은 최소한 하나의 범위 지정 연산자(::)로 구분된 세그먼트를 포함합니다. 한정 이름에 공백이 들어가면 하나의 심볼에 대한 참조의 연속성이 끊기므로 공백을 추가해서는 안 됩니다. 매개변수 목록(parameter list)은 **쉼표 뒤에 공백을 두는 규칙(space-after-comma rule)**을 따라야 합니다.
 
 &#x1f44d;
 ```systemverilog {.good}
