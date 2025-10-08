@@ -467,7 +467,6 @@ inst_type inst_name1 (
   .data_ready_o(data_ready)
 );
 ```
-BookMark
 #### Preprocessor Directives
 
 ***Keep branching preprocessor directives left-aligned and un-indented.***
@@ -769,7 +768,7 @@ For example:
 Aligning line continuations ('`\ `' character) helps visually mark the end of a
 multi-line macro. The position of alignment only needs to be beyond the
 rightmost extent of a multi-line macro by at least one space, when a space does
-not split a token, but should not exceed the maximum line length.
+not split a token, but should not exceed the maximum line length. 라인 연속 기호('\ ' 문자)를 맞추면 여러 줄 매크로의 끝을 시각적으로 표시하는 데 도움이 됩니다. 정렬 위치는 여러 줄 매크로의 가장 오른쪽 끝을 최소 한 칸 이상 넘어야 하며, 이때 공백은 토큰을 분리하지 않아야 합니다. 또한 최대 줄 길이를 초과해서는 안 됩니다.
 
 ```systemverilog
 `define REALLY_LONG_MACRO(arg1, arg2, arg3) \
@@ -806,9 +805,9 @@ end
 
 In any instance where a reasonable human would need to expend thought or refer
 to an operator precedence chart, use parentheses instead to make the order of
-operations unambiguous.
+operations unambiguous. 사람이 연산자 우선순위 표를 참고하거나 깊이 생각해야 할 상황이라면, 연산의 순서를 명확히 하기 위해 대신 괄호를 사용해야 합니다.
 
-#### Ternary Expressions
+#### Ternary Expressions 삼항식
 
 ***Ternary expressions nested in the true condition of another ternary
 expression must be enclosed in parentheses.***
@@ -879,7 +878,7 @@ endmodule : foo
 
 If the designer would like to use comments to mark the beginning/end of a
 particular section for better readability (e.g. in nested for loop blocks), the
-preferred way is to use a single-line comment with no extra delineators, as
+preferred way is to use a single-line comment with no extra delineators(구분자), as
 shown in the examples below.
 
 &#x1f44d;
@@ -1900,7 +1899,7 @@ Keep work in sequential blocks simple. If a sequential block becomes
 sufficiently complicated, consider splitting the combinational logic into a
 separate combinational (`always_comb`) block. Ideally, sequential blocks should
 contain only a register instantiation, with perhaps a load enable or an
-increment.
+increment. 순차 블록(sequential block)에서는 작업을 단순하게 유지하세요. 만약 순차 블록이 충분히 복잡해진다면, 조합 논리(combinational logic)를 별도의 조합(always_comb) 블록으로 분리하는 것을 고려하세요. 이상적으로는, 순차 블록에는 레지스터 할당(register instantiation)만 포함되어야 하며, 필요하다면 로드 인에이블(load enable)이나 증가(increment) 정도만 추가하는 것이 좋습니다.
 
 ### Don't Cares (`X`'s)
 
@@ -1908,44 +1907,44 @@ increment.
 assert `X` to indicate "don't care" to synthesis in any case.  In order to flag
 and detect invalid conditions, rather than assign and propagate `X` values,
 designs should fully define all signal values and make extensive use of SVAs to
-indicate the invalid conditions.***
+indicate the invalid conditions. RTL 코드에서 X 리터럴의 사용은 강력히 권장되지 않습니다. 어떠한 경우에도 합성(synthesis)에 “don’t care” 상태를 표시하기 위해 X를 사용하는 것은 금지되어야 합니다. 잘못된 조건을 표시하고 감지하기 위해 X 값을 할당하거나 전파하는 대신, 모든 신호 값을 완전히 정의하고 SVA(SystemVerilog Assertions)를 적극적으로 사용하여 잘못된 조건을 나타내야 합니다.***
 
 If not strictly controlled, the use of `X` assignments in RTL to flag invalid or
-don't care conditions can lead to simulation/synthesis mismatches.
+don't care conditions can lead to simulation/synthesis mismatches. 엄격하게 관리되지 않으면, 잘못된 상태나 “don’t care” 조건을 표시하기 위해 RTL에서 X 할당을 사용하는 것은 시뮬레이션과 합성 간의 불일치를 초래할 수 있습니다.
 
 Instead of assigning and propagating `X` in order to flag and detect invalid
 conditions, it is encouraged to make **extensive use of SVAs**. The added
-benefits of this design practice are that:
+benefits of this design practice are that: 잘못된 조건을 표시하고 감지하기 위해 X를 할당하고 전파하는 대신, **SVA(SystemVerilog Assertions)**를 적극적으로 사용하는 것이 권장됩니다. 이러한 설계 방식의 추가적인 이점은 다음과 같습니다:
 
-- No special code style is required to properly propagate `X` conditions,
+- No special code style is required to properly propagate `X` conditionsX 조건을 올바르게 전파하기 위해 특별한 코드 스타일은 필요하지 않습니다, 
 - The chance of accidentally introducing simulation/synthesis mismatches is
-  systematically reduced,
+  systematically reduced 시뮬레이션과 합성 간의 불일치를 우발적으로 발생시킬 가능성이 체계적으로 줄어듭니다,
 - Simulation fails quickly and less signal backtracking is needed to root-cause
-  bugs,
+  bugs 시뮬레이션이 빠르게 실패하며, 버그의 근본 원인을 찾기 위해 신호를 되짚어 확인하는 작업이 줄어듭니다,
 - In several cases, formal property verification (FPV) can be used to prove
-  whether these SVAs can always be fulfilled,
+  whether these SVAs can always be fulfilled 몇 가지 경우에는, 형식적 속성 검증(Formal Property Verification, FPV)을 사용하여 이러한 SVA가 항상 충족될 수 있는지 증명할 수 있습니다.,
 - In a security context, deterministic/defined behavior is desired, even for
   illegal/invalid/unreachable input combinations (sometimes stated more tersely
-  as "for security-critical designs, there are no don't-cares").
+  as "for security-critical designs, there are no don't-cares") 보안 관점에서는, 불법적이거나 잘못되었거나 도달할 수 없는 입력 조합에 대해서도 결정적(deterministic)이고 정의된(defined) 동작이 요구됩니다 (때로는 더 간단히 “보안에 중요한 설계에서는 ‘don’t care’ 상태가 없다”라고 표현되기도 합니다.).
 
 The solution presented here has similarities with the approaches presented in
 ["Being Assertive With Your X"](http://www.lcdm-eng.com/papers/snug04_assertiveX.pdf)
-by Don Mills.
+by Don Mills 여기에서 제시된 해결책은 Don Mills가 쓴 "Being Assertive With Your X"에서 제시된 접근 방식과 유사점을 가지고 있습니다.
 
 Note that although don't cares can be used to indicate possible optimization
 opportunities to the synthesis tool, it is debatable whether the gains in logic
 reduction are significant enough to outweigh the possible simulation/synthesis
 mismatch issues that the use of `X` literals may entail (especially with the
-gate-counts available in today's technologies).
+gate-counts available in today's technologies) 주의할 점은, don't care를 합성 도구에 최적화 기회로 표시하는 데 사용할 수는 있지만, 논리 감소로 얻는 이득이 X 리터럴 사용으로 발생할 수 있는 시뮬레이션/합성 불일치 문제를 상쇄할 만큼 충분히 의미 있는지는 논쟁의 여지가 있다는 것입니다. (특히 오늘날 기술에서 사용 가능한 게이트 수를 고려할 때 더욱 그렇습니다.).
 
 
-#### Catching errors where invalid values are consumed
+#### Catching errors where invalid values are consumed 잘못된 값이 사용될 때 발생하는 오류를 포착하기
 
 For an internally-generated signal that could be invalid (but not driven to `X`)
 and is used to trigger some action (such as a register write-enable), it is
 recommened to add an assert to check that when the enable is true, the signal is
 valid. This triggers a simple to diagnose failure when an invalid value has been
-accidentally used.
+accidentally used. 내부에서 생성된 신호가 잘못된 값일 수 있으나(X로 구동되지는 않음), 레지스터 쓰기 허용(write-enable)과 같은 동작을 트리거하는 데 사용된다면, enable이 true일 때 신호가 유효한지 확인하는 assert를 추가하는 것이 권장됩니다. 이렇게 하면 잘못된 값이 우발적으로 사용될 경우, 진단이 쉬운(simple to diagnose) 실패가 발생합니다.
 
 ```systemverilog
 
@@ -1964,12 +1963,12 @@ logic special_reg_en;
 
 assign special_reg_en = (reg_addr == SPECIAL_REG_ADDR) & reg_wr_en;
 
-// Aim to keep RHS of implication as broad as possible
+// Aim to keep RHS of implication as broad as possible 함의(implication)의 우변(RHS, Right Hand Side)을 가능한 한 넓게(broad) 유지하도록 하세요.
 `ASSERT(NoSpecialRegEnWithoutRegEn, special_reg_en |-> reg_wr_en);
 ```
 
 Where the value and its validity signal are generated by a DV environment which
-will drive `X` on invalid signals an `` `ASSERT_KNOWN `` suffices.
+will drive `X` on invalid signals an `` `ASSERT_KNOWN `` suffices 값과 그 유효성(validity) 신호가 DV(Design Verification) 환경에 의해 생성되며, 잘못된 신호에는 `X`를 구동하는 경우에는, `` `ASSERT_KNOWN ``만으로도 충분합니다.
 
 ```systemverilog
 module mymod (
@@ -1987,7 +1986,7 @@ module mymod (
 endmodule
 ```
 
-#### Specific Guidance on Case Statements and Ternaries
+#### Specific Guidance on Case Statements and Ternaries Case 문과 삼항 연산자(Ternary) 사용에 대한 구체적인 지침
 
 To comply with this style, RTL must place `` `ASSERT_KNOWN`` assertions on all
 module outputs, with the exception of signals that may implicitly be `X` at the
