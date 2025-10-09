@@ -1990,7 +1990,7 @@ endmodule
 
 To comply with this style, RTL must place `` `ASSERT_KNOWN`` assertions on all
 module outputs, with the exception of signals that may implicitly be `X` at the
-beginning of the simulation, such as FIFO, SRAM or register file outputs.
+beginning of the simulation, such as FIFO, SRAM or register file outputs. 이 스타일을 따르기 위해 RTL은 모든 모듈 출력에 ASSERT_KNOWN 어서션을 배치해야 합니다. 단, 시뮬레이션 시작 시 암묵적으로 X 값이 될 수 있는 FIFO, SRAM, 레지스터 파일 등의 출력 신호는 예외입니다.
 
 ```systemverilog
 module mymod (
@@ -2006,7 +2006,7 @@ endmodule : mymod
 Further, it is encouraged to add assertions to the signals forming conditions of
 case statements, ternaries or if/else statements. The assertion style is at the
 designer's discretion, and can range from simple `` `ASSERT_KNOWN``  to fully
-functional assertions, as shown in the following examples:
+functional assertions, as shown in the following examples: 또한, case 문, 삼항 연산자(ternary), 또는 if/else 문 등의 조건을 형성하는 신호들에 대해 assertion(단언문)을 추가하는 것이 권장됩니다. 어떤 스타일의 assertion을 사용할지는 설계자의 재량에 따르며, 단순한 `` `ASSERT_KNOWN``부터 아래 예시처럼 완전한 기능의 assertion까지 다양할 수 있습니다.
 
 ```systemverilog
 typedef enum logic [1:0] {mode0, mode1, mode2} state_e;
@@ -2066,7 +2066,7 @@ ignored as some valid signal that qualifies the input is not set. For example
 the input may be fed directly from a memory or from a top-level input that a DV
 environment drives to `X`. A plain `` `ASSERT_KNOWN `` will not work under these
 circumstances and it is appropriate to use an assert with some qualifying valid
-instead:
+instead: case문이나 삼항 연산자(ternary)의 입력 값이 `X`가 될 수 있는 경우가 있지만, 그런 상황이 항상 문제가 되는 것은 아닙니다. 왜냐하면, 해당 입력을 유효하게 만드는 신호가 설정되지 않은 상태에서는 출력이 무시되기 때문입니다. 예를 들어, 입력이 메모리에서 직접 들어오거나, DV(DV 환경, 즉 Design Verification 환경)가 상위 입력 신호를 `X`로 구동하는 경우가 있습니다. 이러한 상황에서는 단순한 `` `ASSERT_KNOWN``만으로는 적절히 동작하지 않으며, 유효 신호(valid signal)을 함께 조건으로 두는 qualified assertion(조건부 검증문)을 사용하는 것이 적절합니다.
 
 ```systemverilog
 `ASSERT(AddrKnownIfValid, addr_valid |-> !$isunknown(addr))
@@ -2081,7 +2081,7 @@ end
 ```
 
 The aim should be to make the qualifying valid signal as wide reaching as
-possible rather than narrowing down the `X` check more than is required:
+possible rather than narrowing down the `X` check more than is required: 목표는 X 검사를 필요 이상으로 좁히기보다는, 유효 신호(valid signal)를 가능한 한 광범위하게 적용하는 것이어야 합니다. 즉, X가 문제가 되지 않는 상황을 억지로 줄이기보다는, 유효 신호가 활성화된 범위를 최대한 넓게 잡아 조건부 검증(assertion)을 적용하라는 의미입니다.
 
 &#x1f44e;
 ```systemverilog {.bad}
@@ -2095,8 +2095,7 @@ possible rather than narrowing down the `X` check more than is required:
 It should be noted that dynamic array indexing operations can implicitly lead to
 `X`. This should be avoided if possible by either aligning indexed arrays to
 powers of 2 or by adding guarding if statements around the indexing operation.
-These solutions are illustrated in the following examples.
-
+These solutions are illustrated in the following examples. 동적 배열 인덱싱 연산은 암묵적으로 `X` 값을 발생시킬 수 있다는 점에 주의해야 합니다. 가능하다면, 인덱싱 연산 주변에 조건문(if 문)을 추가하거나, 인덱싱되는 배열을 2의 거듭제곱 크기로 맞추는 방식으로 이를 피해야 합니다. 이러한 해결책들은 다음 예제에서 보여집니다.
 
 &#x1f44e;
 ```systemverilog {.bad}
@@ -2132,7 +2131,7 @@ assign selected = (idx < $bits(foo)) ? foo[idx] : 1'b0;
 
 ### Combinational Logic
 
-***Avoid sensitivity lists, and use a consistent assignment type.***
+***Avoid sensitivity lists, and use a consistent assignment type. 감도 목록(sensitivity list)은 피하고, 일관된 할당 방식(assignment type)을 사용하세요.***
 
 Use `always_comb` for SystemVerilog combinational blocks. Use `always @*` if
 only Verilog-2001 is supported. Never explicitly declare sensitivity lists for
@@ -2151,7 +2150,7 @@ Where a case statement is needed, enclose it in its own `always_comb` block.
 Synthesizable combinational logic blocks should only use blocking assignments.
 
 Do not use three-state logic (`Z` state) to accomplish on-chip logic such as
-muxing.
+muxing. 칩 내부에서 멀티플렉서 같은 논리를 구현할 때, 고임피던스(`Z`)를 쓰지 말고 항상 명시적인 선택 논리로 구현하라는 조언입니다.
 
 Do not infer a latch inside a function, as this may cause a
 simulation/synthesis mismatch.
@@ -2159,7 +2158,7 @@ simulation/synthesis mismatch.
 ### Case Statements
 
 ***Avoid case-modifying pragmas. `unique case` is the best
-practice. Always define a default case.***
+practice. Always define a default case. 케이스 수정 프래그마(예: `full_case` or `parallel_case` pragma)는 피하십시오. unique case가 가장 좋은 관행입니다. 항상 기본(default) 케이스를 정의하세요.***
 
 Never use either the `full_case` or `parallel_case` pragmas. These pragmas can
 easily cause simulation/synthesis mismatches.
@@ -2183,7 +2182,7 @@ The `unique` prefix is recommended before all case statements, as it creates
 simulation assertions that can catch certain mistakes. In some cases, `priority`
 may be used instead of `unique`, though in such cases, cascaded ternary
 structures should be the preferred way of representing priority encoders as
-they are a more readable representation for priority encoders.
+they are a more readable representation for priority encoders. 어떤 경우에는 unique 대신 priority를 사용할 수 있지만, 이런 경우에는 우선순위 인코더(priority encoder)를 표현할 때는 연쇄 삼항 연산(cascaded ternary) 구조를 사용하는 것이 더 바람직합니다. 그 이유는 연쇄 삼항 구조가 우선순위 인코더를 표현하는 데 있어 더 읽기 쉽기 때문입니다.
 
 Be sure to use `unique case` correctly. In particular, make sure that:
 
@@ -2195,7 +2194,7 @@ Be sure to use `unique case` correctly. In particular, make sure that:
   - if no default assignments are given before the case statement as shown in
   the example above, any variables assigned in one case item must be assigned in
   all case items, including the `default:`. Failing to do this can lead to a
-  simulation/synthesis mismatch as described in [Don Mills' paper][yalagp].
+  simulation/synthesis mismatch as described in [Don Mills' paper][yalagp]. 위 예제에서 보여진 것처럼, case문 전에 기본(default) 할당이 주어지지 않았다면, 한 case 항목에서 값을 할당하는 모든 변수는 모든 case 항목에서 반드시 할당되어야 하며, 여기에는 default: 항목도 포함됩니다. 이를 지키지 않으면, Don Mills의 논문에서 설명된 것처럼 시뮬레이션과 합성 결과가 일치하지 않는 문제(simulation/synthesis mismatch)가 발생할 수 있습니다.
 
 The following is a different example showing a style-compliant case statement
 variant that is frequently used for describing the next-state logic of a finite
@@ -2250,7 +2249,7 @@ performs exact matches for undriven `X` inputs. While this does not completely
 fix the problems with symmetric wildcard matching, it is harder to accidentally
 produce a `Z` input than an `X` input, so this form is preferred.
 `case inside` does not treat either `X` or `Z` in the case expression as a
-wildcard, so this form is preferred over `casez`.
+wildcard, so this form is preferred over `casez`. `casex`는 사용하지 않는 것이 좋습니다. `casex`는 대칭 와일드카드 연산자(symmetric wildcard operator)를 구현하는데, 이 경우 case 표현식에 있는 `X`가 하나 이상의 case 항목과 매치될 수 있습니다. 반면, `casez`는 high-impedance 상태(`Z` 또는 `?`)만 와일드카드로 처리하며, 값이 지정되지 않은(undriven) `X` 입력에 대해서는 정확하게 매치합니다. 비록 이것이 대칭 와일드카드 매칭 문제를 완전히 해결하는 것은 아니지만, 실수로 `Z` 입력을 만들기는 `X` 입력을 만드는 것보다 어렵기 때문에, `casez`를 사용하는 것이 더 권장됩니다. 또한, `case inside`는 case 표현식에서 `X`나 `Z`를 와일드카드로 처리하지 않으므로, `casez`보다 이 형태를 사용하는 것이 더 바람직합니다.
 
 References:
 
