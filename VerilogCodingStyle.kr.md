@@ -2251,12 +2251,24 @@ produce a `Z` input than an `X` input, so this form is preferred.
 `case inside` does not treat either `X` or `Z` in the case expression as a
 wildcard, so this form is preferred over `casez`. `casex`는 사용하지 않는 것이 좋습니다. `casex`는 대칭 와일드카드 연산자(symmetric wildcard operator)를 구현하는데, 이 경우 case 표현식에 있는 `X`가 하나 이상의 case 항목과 매치될 수 있습니다. 반면, `casez`는 high-impedance 상태(`Z` 또는 `?`)만 와일드카드로 처리하며, 값이 지정되지 않은(undriven) `X` 입력에 대해서는 정확하게 매치합니다. 비록 이것이 대칭 와일드카드 매칭 문제를 완전히 해결하는 것은 아니지만, 실수로 `Z` 입력을 만들기는 `X` 입력을 만드는 것보다 어렵기 때문에, `casez`를 사용하는 것이 더 권장됩니다. 또한, `case inside`는 case 표현식에서 `X`나 `Z`를 와일드카드로 처리하지 않으므로, `casez`보다 이 형태를 사용하는 것이 더 바람직합니다.
 
+```systemverilog
+  logic [3:0] a;
+
+  always_comb begin
+    case (a) inside
+      {4'b0000, 4'b0001}: $display("a는 0 또는 1입니다.");
+      {4'b0010, 4'b0011, 4'b0100}: $display("a는 2, 3 또는 4입니다.");
+      default: $display("a는 0~4 범위 밖입니다.");
+    endcase
+  end
+```
+
 References:
 
 *   Don Mills, [Yet Another Latch and Gotchas Paper][yalagp]
 *   Clifford Cummings, [full\_case parallel\_case, the Evil Twins of Verilog Synthesis][twinevils]
 *   Clifford Cummings, [SystemVerilog's priority & unique][priuniq]
-*   Sutherland, Mills, and Spear, [Gotcha Again: More Subtleties in the Verilog and SystemVerilog Standards That Every Engineer Should Know][gotagain]
+*   Sutherland, Mills, and Spear, [Gotcha Again: More Subtleties(미묘한 점들) in the Verilog and SystemVerilog Standards That Every Engineer Should Know][gotagain]
 
 [yalagp]: http://www.lcdm-eng.com/papers/snug12_Paper_final.pdf
 [twinevils]: http://www.sunburst-design.com/papers/CummingsSNUG1999Boston_FullParallelCase_rev1_1.pdf
@@ -2304,7 +2316,7 @@ Do not use generate regions {`generate`, `endgenerate`}.
 ### Signed Arithmetic
 
 ***Use the available signed arithmetic constructs wherever signed
-arithmetic is used.***
+arithmetic is used. 부호 있는 산술 연산이 사용되는 곳에서는 가능한 부호 있는 산술 연산 구문을 사용하세요.즉, SystemVerilog에서 변수가 signed일 때는 +, -, * 등을 단순히 쓰지 말고, signed 연산을 명시적으로 지원하는 구문이나 연산자를 사용하는 것이 권장된다는 의미입니다.***
 
 When it's necessary to convert from unsigned to signed, use the `signed'` cast
 operator (`$signed` in Verilog-2001).
@@ -2342,7 +2354,7 @@ When formatting text representations of numbers for log files, make it clear
 what data you are including.
 
 Make the base of a printed number clear. Only print decimal numbers without
-modifiers. Use a `0x` prefix for hexadecimal and `0b` prefix for binary.
+modifiers(수식자). Use a `0x` prefix for hexadecimal and `0b` prefix for binary.
 
 Decode individual fields of large structures individually, instead of expecting
 the user to manually decode raw values.
@@ -2496,7 +2508,7 @@ endfunction
 
 All local variables must be assigned in all code paths, either through an
 initial assignment or through the use of `else` and `default:` for `if` and
-`case` statements.
+`case` statements. 모든 지역 변수(local variable)는 모든 코드 경로(code path) 에서 반드시 값이 할당되어야 한다. 이는 초기값 할당(initial assignment) 을 하거나, if 문에서는 else 절, case 문에서는 default 절을 사용해서 달성해야 한다는 의미이다. 즉, 어떤 조건에서도 변수가 초기화되지 않은 상태로 남아서는 안 된다는 규칙을 말한다.
 
 &#x1f44d;
 ```systemverilog {.good}
@@ -2588,17 +2600,24 @@ endmodule
 ### Problematic Language Features and Constructs
 
 These language features are considered problematic and their use is discouraged
-unless otherwise noted:
+unless otherwise noted: 이러한 언어 기능들은 문제가 있는 것으로 간주되며, 특별한 언급이 없는 한 사용을 권장하지 않습니다.
 
--   Interfaces.
 -   The `alias` statement.
+SystemVerilog의 alias statement는 두 개 이상의 신호(변수)를 완전히 동일한 물리적 신호로 연결(묶는) 데 사용됩니다. 즉, alias로 연결된 신호들은 하나의 값을 공유하며, 어느 한쪽을 변경하면 다른 쪽도 자동으로 동일하게 변합니다.
+
+```systemverilog
+alias net1 = net2;
+
+// 또는 여러 개를 한 번에 묶을 수도 있습니다:
+alias a = b = c;
+```
 
 #### Floating begin-end blocks
 
 The use of generate blocks other than `for` loop, `if`, or `case` generate
 constructs is not LRM compliant. While such usage might be accepted by some
 tools, this guide prohibits such "bare" generate blocks. Note that the similar
-"sequential block" construct is LRM compliant and allowed.
+"sequential block" construct is LRM compliant and allowed. for 루프, if, 또는 case 생성 구문(generate construct)을 제외한 다른 형태의 generate 블록 사용은 LRM(언어 기준 문서, Language Reference Manual) 에서 규격에 맞지 않습니다. 이러한 사용 방식은 일부 도구에서 허용될 수도 있지만, 이 가이드에서는 이러한 “독립적인(bare)” generate 블록 사용을 금지합니다. 단, 유사한 형태의 “순차 블록(sequential block)” 구문은 LRM에 부합하므로 허용됩니다.
 
 &#x1f44e;
 ```systemverilog {.bad}
