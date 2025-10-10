@@ -3067,7 +3067,7 @@ endmodule
 
 It is encouraged to use SystemVerilog assertions (SVAs) throughout the design to
 check functional correctness and flag invalid conditions. In order to increase
-productivity and keep the assertions short and concise, the following assertion
+productivity and keep the assertions short and concise(간결한), the following assertion
 macros can be used:
 
 ```systemverilog
@@ -3105,7 +3105,7 @@ identical to the original assertions, i.e.,
 More security assertion and coding style guidance will be given in a separate
 document, soon.
 
-## Appendix - Condensed Style Guide
+## Appendix - Condensed(요약된) Style Guide
 
 This is a short summary of the Comportable style guide. Refer to the main text
 body for explanations examples, and exceptions.
@@ -3166,7 +3166,6 @@ body for explanations examples, and exceptions.
 * `logic` is preferred over `reg` and `wire`, declare all signals
   explicitly
 * `always_comb`, `always_ff` and `always_latch` are preferred over `always`
-* Interfaces are discouraged
 * Sequential logic must use **non-blocking** assignments
 * Combinational blocks must use **blocking** assignments
 * Use of latches is discouraged, use flip-flops when possible
