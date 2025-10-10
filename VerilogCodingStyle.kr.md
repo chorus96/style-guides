@@ -2684,8 +2684,8 @@ The key ideas in this section include:
 *   Declare all signals and use `logic`: `logic foo;`
 *   Packed arrays are little-endian: `logic [7:0] byte;`
 *   Unpacked arrays are big-endian: `byte_t arr[0:N-1];`
-*   Prefer to register module outputs.
-*   Declare FSMs consistently.
+*   Prefer to register module outputs. 
+*   Declare FSMs consistently. FSM(Finite State Machines)을 일관되게 선언하라. 즉, 프로젝트 내에서 유한 상태 기계(FSM)를 정의할 때 항상 같은 방식과 규칙을 사용하라는 의미입니다.
 
 ### Declare all signals
 
@@ -2745,7 +2745,7 @@ These exceptions should be justified with a short comment.
 
 It is permissible for DV (Design Verification) to make use of 2-state
 logic, but all interfaces between 4-state and 2-state signals must assert
-a check for `X` on the 4-state net before resolving to a 2-state variable.
+a check for `X` on the 4-state net before resolving to a 2-state variable. DV(Design Verification, 설계 검증)에서는 2-state 논리(0과 1만 존재)를 사용하는 것이 허용되지만, 4-state 신호(0, 1, X, Z)와 2-state 신호 사이의 모든 인터페이스에서는, 2-state 변수로 변환하기 전에 4-state 신호에 대해 X 체크를 반드시 수행해야 한다. 즉, 검증 환경에서는 2-state를 써도 되지만, 4-state 신호를 2-state로 처리할 때 미확정 상태(X)가 섞이지 않도록 반드시 검사해야 한다는 의미입니다.
 
 ### Logical vs. Bitwise
 
@@ -2756,7 +2756,7 @@ constructs that are evaluating logic (true or false) values, such as
 if clauses and ternary assignments.  Prefer bit-wise operators (`~`, `|`,
 `&`, `^`) for all data constructs, even if scalar. Exceptions can be made
 where it is clear that the evaluated expression is to be used in a logical
-context.
+context. 논리 연산자(!, ||, &&, ==, !=)는 논리값(true/false)을 평가하는 모든 구문, 예를 들어 if 문이나 삼항 연산자(ternary) 할당에서 사용해야 한다. 비트 연산자(~, |, &, ^)는 모든 데이터 구문, 스칼라(scalar)라도 가능한 한 사용하도록 한다. 단, 평가된 표현식이 명확히 논리적 컨텍스트(logical context)에서 사용되는 경우에는 예외를 둘 수 있다.
 
 :+1:
 ```systemverilog {.good}
@@ -2802,7 +2802,7 @@ assign y = (a && !b) || c;
 
 :+1:
 ```systemverilog
-// allowed logical assignment for boolean test
+// 예외: allowed logical assignment for boolean test
 assign request_valid = !fifo_empty && data_available;
 
 always_comb begin
@@ -2875,7 +2875,7 @@ States should be named in `UpperCamelCase`, like other
 
 Barring special circumstances, the initial idle state of the state
 machines will be named `Idle` or `StIdle`. (Alternate names are acceptable
-if they improve clarity.)
+if they improve clarity.) 특별한 상황이 아니라면, 상태 기계(state machine)의 초기 유휴 상태(initial idle state)는 Idle 또는 StIdle로 명명한다. (명확성을 높일 수 있다면 다른 이름을 사용하는 것도 허용된다.) 즉, 기본적으로 초기 상태는 Idle/StIdle로 하고, 필요시 더 이해하기 쉬운 이름으로 바꿀 수 있다는 의미입니다.
 
 Ideally, each module should only contain one state machine. If your module needs
 more than one state machine, you will need to add a unique prefix (or suffix) to
@@ -2888,15 +2888,15 @@ which state machine. For example, a module with a "reader" machine and a
 The combinational process block should contain:
 
 -   A case statement that decodes state to produce next state and combinational
-    outputs. For clarity, only cases where the output value deviates from the
-    default should be coded.
+    outputs. For clarity, only cases where the output value deviates(벗어나다) from the
+    default should be coded. 상태를 해독하여(next state와 조합 논리 출력(combinational outputs)을 생성하는) case 문 명확성을 위해, 출력 값이 기본값(default)과 다른 경우에만 case를 작성하도록 한다. 즉, case 문에서 모든 상태를 다 쓰지 말고, 기본값과 다른 경우만 명시하여 코드를 더 깔끔하게 작성하라는 의미입니다.
 -   Before the case statement should be a block of code that defines default
     values for every combinational output, including "next state."
 -   The default value for the "next state" variable should be the current state.
     The case statement that decodes state will then only assign to "next state"
     when transitioning between states.
 -   Within the case statement, each state alternative should be preceded with a
-    comment that describes the function of that state within the state machine.
+    comment that describes the function of that state within the state machine. case 문 내에서, 각 상태 대안(state alternative) 앞에는 그 상태가 상태 머신(state machine)에서 수행하는 기능을 설명하는 주석(comment)을 달아야 한다. 즉, 각 상태 블록이 무슨 역할을 하는지 이해하기 쉽도록 주석을 달라는 지침이에요.
 
 *The State Register*
 
@@ -2906,7 +2906,7 @@ variable should latch the value of the "next state" variable.
 *Other Guidelines*
 
 When possible, try to choose state names that differ near the beginning of their
-name, to make them more readable when viewing waveform traces.
+name, to make them more readable when viewing waveform traces. 가능하면, 상태 이름(state name)을 이름의 앞부분에서 서로 다르게 선택하도록 하라. 이렇게 하면 웨이브폼 트레이스(waveform trace)를 볼 때 가독성이 높아진다. 즉, 상태 이름의 초반 글자부터 구별 가능하게 지어야 웨이브폼에서 상태 변화를 쉽게 구분할 수 있다는 의미입니다.
 
 *Example*
 
